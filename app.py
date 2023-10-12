@@ -1,6 +1,8 @@
 import os
 from flask import Flask, request, render_template
 from lib.database_connection import get_flask_database_connection
+from lib.album_repository import AlbumRepository
+from lib.album import Album
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -8,25 +10,30 @@ app = Flask(__name__)
 # == Your Routes Here ==
 
 
-# == Example Code Below ==
+@app.route('/albums')
+def get_albums():
+    connection = get_flask_database_connection(app)
+    repository = AlbumRepository(connection)
+    albums = repository.all()
+    return render_template('/albums/album.html', albums=albums)
 
-# GET /emoji
-# Returns a smiley face in HTML
-# Try it:
-#   ; open http://localhost:5001/emoji
-@app.route('/emoji', methods=['GET'])
-def get_emoji():
-    # We use `render_template` to send the user the file `emoji.html`
-    # But first, it gets processed to look for placeholders like {{ emoji }}
-    # These placeholders are replaced with the values we pass in as arguments
-    return render_template('emoji.html', emoji=':)')
+@app.route('/albums/<id>')
+def get_one_album():
+    connection = get_flask_database_connection(app)
+    repository = AlbumRepository(connection)
+    albums = repository.find()
+    return render_template('albums/one_album.html', albums=albums)
 
-# This imports some more example routes for you to see how they work
-# You can delete these lines if you don't need them.
-from example_routes import apply_example_routes
-apply_example_routes(app)
 
-# == End Example Code ==
+
+
+
+
+
+
+
+
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

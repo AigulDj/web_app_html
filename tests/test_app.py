@@ -1,20 +1,39 @@
+
 from playwright.sync_api import Page, expect
 
-# Tests for your routes go here
+def test_get_albums(db_connection, page, test_web_address):
+    db_connection.seed("seeds/record_store_html.sql")
 
-# === Example Code Below ===
+    # We load a virtual browser and navigate to the /albums page
+    page.goto(f"http://{test_web_address}/albums")
+    # We look at all the <li> tags
+    div_tags = page.locator("div")
 
-"""
-We can get an emoji from the /emoji page
-"""
-def test_get_emoji(page, test_web_address): # Note new parameters
-    # We load a virtual browser and navigate to the /emoji page
-    page.goto(f"http://{test_web_address}/emoji")
+    # We assert that it has the books in it
+    expect(div_tags).to_have_text([
+        "Title: Doolittle\nReleased: 1989",
+        "Title: Surfer Rosa Released: 1988",
+        "Title: Waterloo Released: 1974",
+        "Title: Super Trouper Released: 1980",
+        "Title: Bossanova Released: 1990",
+        "Title: Lover Released: 2019",
+        "Title: Folklore Released: 2020",
+        "Title: I Put a Spell on You Released: 1965",
+        "Title: Baltimore Released: 1978",
+        "Title: Here Comes the Sun Released: 1971",
+        "Title: Fodder on My Wings Released: 1982",
+        "Title: Ring Ring Released: 1973"
+    ])
 
-    # We look at the <strong> tag
-    strong_tag = page.locator("strong")
+def test_get_one_albums(db_connection, page, test_web_address):
+    db_connection.seed("seeds/record_store_html.sql")
 
-    # We assert that it has the text ":)"
-    expect(strong_tag).to_have_text(":)")
+    # We load a virtual browser and navigate to the /albums page
+    page.goto(f"http://{test_web_address}/albums/1")
+    # We look at all the <li> tags
+    div_tags = page.locator("div")
 
-# === End Example Code ===
+    # We assert that it has the books in it
+    expect(div_tags).to_have_text(
+        "Doolittle\nRelease year: 1989\nArtist: Pixies"
+    )
