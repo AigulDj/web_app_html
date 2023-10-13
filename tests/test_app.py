@@ -37,3 +37,26 @@ def test_get_one_albums(db_connection, page, test_web_address):
     expect(p_tags).to_have_text([
         "Release year: 1989 Artist: Pixies"
     ])
+
+def test_get_artists(db_connection, page, test_web_address):
+    db_connection.seed("seeds/record_store_html.sql")
+    page.goto(f"http://{test_web_address}/artists")
+    h1_tags = page.locator("h1")
+
+    expect(h1_tags).to_have_text([
+        'Name: Pixies',
+        'Name: ABBA',
+        'Name: Taylor Swift',
+        'Name: Nina Simone'
+    ])
+
+def test_get_single_artist(db_connection, page, test_web_address):
+    db_connection.seed("seeds/record_store_html.sql")
+    page.goto(f"http://{test_web_address}/artists/2")
+    h2_tags = page.locator("h2")
+    p_tags = page.locator("p")
+
+    expect(h2_tags).to_have_text("Name: ABBA")
+    expect(p_tags).to_have_text("Genre: Pop")
+
+    

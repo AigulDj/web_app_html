@@ -1,0 +1,12 @@
+<!-- GET /artists -->
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <title>Music Store</title>
+    </head>
+    <body>
+        {% for artist in artists %}
+        <h1>Name: <a href="/artists/{{artist.id}}">{{artist.name}}</a></h1>
+        {% endfor %}
+    </body>
+</html>

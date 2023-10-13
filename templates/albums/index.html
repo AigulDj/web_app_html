@@ -1,21 +1,14 @@
 <!-- GET /albums -->
-
-<html>
+<!DOCTYPE html>
+<html lang="eng">
     <head></head>
     <body>
     <h1>Albums</h1>
     {% for album in albums %}
     <div>
-        Title: {{album.title}}
+        <a href="/albums/{{album.id}}">Title: {{album.title}}</a>
         Released: {{album.release_year}}
     </div>
     {% endfor %}
-
-    <!-- <div>
-        Title: Surfer Rosa
-        Released: 1988
-    </div> -->
-
-    <!-- ... -->
     </body>
 </html>
