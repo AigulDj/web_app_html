@@ -59,4 +59,16 @@ def test_get_single_artist(db_connection, page, test_web_address):
     expect(h2_tags).to_have_text("Name: ABBA")
     expect(p_tags).to_have_text("Genre: Pop")
 
-    
+
+def test_get_artist_link(db_connection, page, test_web_address):
+    db_connection.seed("seeds/record_store_html.sql")
+    page.goto(f"http://{test_web_address}/artists/2")
+
+    # Click the link with the text 'Bluets by Maggie Nelson'
+    page.click("text=ABBA")
+
+    name_element = page.locator(".t-name")
+    expect(name_element).to_have_text("Name: ABBA")
+
+    genre_element = page.locator(".t-genre")
+    expect(genre_element).to_have_text("Genre: Pop")
