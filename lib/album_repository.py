@@ -12,17 +12,18 @@ class AlbumRepository:
             for row in rows
         ]
     def find(self, album_id):
-        rows = self._connection.execute(f'SELECT * FROM albums WHERE id= %s', [album_id])
+        rows = self._connection.execute('SELECT a.id, a.title, a.release_year, ar.name \
+                                        FROM albums AS a \
+                                        JOIN artists AS ar ON a.artist_id = ar.id \
+                                        WHERE a.id = %s;', [album_id])
         row = rows[0]
-        found_album = Album(row["id"], row["title"], row["release_year"], row["artist_id"])
-        print(found_album)
-        return found_album
+        return Album(row["id"], row["title"], row["release_year"], row["name"])
     
-    def create(self, album):
-        self._connection.execute(
-            "INSERT INTO albums (title, release_year, artist_id) VALUES (%s, %s, %s)",
-            [album.title, album.release_year, album.artist_id]
-        )
-        return None
+    # def create(self, album):
+    #     self._connection.execute(
+    #         "INSERT INTO albums (title, release_year, artist_id) VALUES (%s, %s, %s)",
+    #         [album.title, album.release_year, album.artist_id]
+    #     )
+    #     return None
     
     

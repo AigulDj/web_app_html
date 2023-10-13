@@ -30,7 +30,7 @@ i get one album back
 def test_find(db_connection):
     db_connection.seed("seeds/record_store_html.sql")
     repository = AlbumRepository(db_connection)
-    assert repository.find(1) == Album(1, 'Doolittle', 1989, 1)
+    assert repository.find(1) == Album(1, 'Doolittle', 1989, 'Pixies')
 
 
 

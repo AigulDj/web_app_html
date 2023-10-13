@@ -4,25 +4,22 @@ from lib.database_connection import get_flask_database_connection
 from lib.album_repository import AlbumRepository
 from lib.album import Album
 
-# Create a new Flask app
+
 app = Flask(__name__)
-
-# == Your Routes Here ==
-
 
 @app.route('/albums')
 def get_albums():
     connection = get_flask_database_connection(app)
     repository = AlbumRepository(connection)
     albums = repository.all()
-    return render_template('/albums/album.html', albums=albums)
+    return render_template('/albums/index.html', albums=albums)
 
-@app.route('/albums/<id>')
-def get_one_album():
+@app.route('/albums/<int:id>')
+def get_one_album(id):
     connection = get_flask_database_connection(app)
     repository = AlbumRepository(connection)
-    albums = repository.find()
-    return render_template('albums/one_album.html', albums=albums)
+    album = repository.find(id)
+    return render_template('albums/album.html', album=album)
 
 
 
